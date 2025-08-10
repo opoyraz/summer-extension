@@ -34,7 +34,7 @@ summer-extension/
 └── README.md
 ```
 
-> The extension expects your backend at **http://localhost:8000** (see `popup.js`).
+> The extension expects your backend at **http://localhost:5050** (see `popup.js`).
 
 ---
 
@@ -46,7 +46,7 @@ cd backend
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 5050
 ```
 **Windows (PowerShell)**
 ```powershell
@@ -54,10 +54,10 @@ cd backend
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 5050
 ```
 
-The API will run at: **http://127.0.0.1:8000**
+The API will run at: **http://127.0.0.1:5050**
 
 ### 🔑 .env (optional, for cloud providers)
 Create `backend/.env`:
@@ -133,7 +133,7 @@ if not model:
 
 With the backend running:
 ```bash
-curl -X POST http://localhost:8000/summarize   -H "Content-Type: application/json"   -d '{"provider":"ollama","model":"llama3.1:8b","text":"Your text here"}'
+curl -X POST http://localhost:5050/summarize   -H "Content-Type: application/json"   -d '{"provider":"ollama","model":"llama3.1:8b","text":"Your text here"}'
 ```
 
 You should get back JSON like:
