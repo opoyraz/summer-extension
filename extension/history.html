@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📚 Summary History</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9ff;
+      padding: 20px;
+      width: 600px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #historyContainer {
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    /* Custom scrollbar */
+    #historyContainer::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #historyContainer::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    #historyContainer::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    #historyContainer::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .summary-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
+      animation: fadeIn 0.3s ease-in-out;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .summary-card pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+      color: #374151;
+      background: #f9fafb;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .summary-card small {
+      color: #6b7280;
+      display: block;
+      font-size: 12px;
+    }
+
+    .model-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-btn {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .copy-btn:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-weight: 600;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+    }
+
+    #clearHistoryBtn {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    #clearHistoryBtn:hover {
+      background-color: #dc2626;
+    }
+
+    #backBtn {
+      background-color: #6366f1;
+      color: white;
+    }
+
+    #backBtn:hover {
+      background-color: #4f46e5;
+    }
+
+    .button-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .button-container button {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #6b7280;
+      padding: 40px;
+      font-size: 16px;
+    }
+
+    .empty-state::before {
+      content: "📭";
+      display: block;
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    /* Loading spinner */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+
+    .loading::after {
+      content: "⏳";
+      display: block;
+      font-size: 32px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Summary History</h1>
+  <div id="historyContainer">
+    <div class="loading">Loading summaries...</div>
+  </div>
+
+  <div class="button-container">
+    <button id="backBtn">🔙 Back to Extension</button>
+    <button id="clearHistoryBtn">🗑️ Clear All History</button>
+  </div>
+
+  <script src="history.js"></script>
+</body>
+</html>

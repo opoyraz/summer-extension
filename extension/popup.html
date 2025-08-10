@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Summarize with Summer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #f9f9ff, #ffffff);
+      padding: 20px;
+      width: 350px;
+    }
+
+    h3 {
+      text-align: center;
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .env-configured {
+      background: #e8f5e8;
+      border-color: #4caf50;
+    }
+
+    .env-configured::placeholder {
+      color: #666;
+    }
+
+    .env-label {
+      color: #4caf50;
+      font-size: 12px;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .env-label.show {
+      display: block;
+    }
+
+    #progress-container {
+      margin-top: 15px;
+      position: relative;
+      height: 20px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+
+    #progress-bar {
+      height: 100%;
+      width: 0;
+      background: #ffd369;
+      transition: width 0.3s ease;
+    }
+
+    #progress-label {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      line-height: 20px;
+      color: #333;
+    }
+
+    pre#output {
+      background: #f0f0f0;
+      padding: 12px;
+      font-size: 16px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin-top: 15px;
+    }
+
+    button {
+      background-color: #ffd369;
+      color: #222;
+      font-weight: bold;
+      margin-top: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #f4c95d;
+    }
+  </style>
+</head>
+<body>
+  <h3>☀️ Summarize with <strong>Summer</strong></h3>
+
+  <div id="form">
+    <label for="provider">Provider</label>
+    <select id="provider">
+      <option value="ollama">Ollama (Local)</option>
+      <option value="openai">OpenAI</option>
+      <option value="groq">Groq</option>
+      <option value="watsonx">IBM Watsonx</option>
+    </select>
+
+    <div id="ollama-options" class="provider-options">
+      <label for="ollama-model">Model</label>
+      <select id="ollama-model">
+        <option value="llama3.1:8b">llama3.1:8b</option>
+        <option value="granite3.3:8b">granite3.3:8b</option>
+        <option value="gemma3:4b">gemma3:4b</option>
+        <option value="llama3.2:3b">llama3.2:3b</option>
+        <option value="gpt-oss:20b">gpt-oss:20b</option>
+        <option value="mistral:7b">mistral:7b</option>
+        <option value="RefinedNeuro/Turkcell-LLM-7b-v1">Turkcell-LLM-7b-v1 🇹🇷</option>
+        <option value="other">Other</option>
+      </select>
+      <input
+        type="text"
+        id="custom-ollama-model"
+        placeholder="Enter other model name"
+        list="ollama-custom-models"
+        class="hidden"
+      >
+    </div>
+
+    <div id="openai-options" class="provider-options hidden">
+      <label for="openai-model">Model</label>
+      <select id="openai-model">
+        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+        <option value="gpt-4o-mini">gpt-4o-mini</option>
+        <option value="o4-mini">o4-mini</option>
+        <option value="other">Other</option>
+      </select>
+      <input
+        type="text"
+        id="custom-openai-model"
+        placeholder="Enter other model name"
+        list="openai-models"
+        class="hidden"
+      >
+      <label for="openai-apikey">API Key</label>
+      <input
+        type="text"
+        id="openai-apikey"
+        placeholder="sk-..."
+      >
+      <div class="env-label" id="openai-env-label">✓ Using API key from .env file</div>
+    </div>
+
+    <div id="groq-options" class="provider-options hidden">
+      <label for="groq-model">Model</label>
+      <select id="groq-model">
+        <option value="qwen/qwen3-32b">qwen/qwen3-32b</option>
+        <option value="allam-2-7b">allam-2-7b</option>
+        <option value="deepseek-r1-distill-llama-70b">deepseek-r1-distill-llama-70b</option>
+        <option value="openai/gpt-oss-120b">openai/gpt-oss-120b</option>
+        <option value="other">Other</option>
+      </select>
+      <input
+        type="text"
+        id="custom-groq-model"
+        placeholder="Enter other model name"
+        list="groq-models"
+        class="hidden"
+      >
+      <label for="groq-apikey">API Key</label>
+      <input
+        type="text"
+        id="groq-apikey"
+        placeholder="gsk_..."
+      >
+      <div class="env-label" id="groq-env-label">✓ Using API key from .env file</div>
+    </div>
+
+    <div id="watsonx-options" class="provider-options hidden">
+      <label for="watsonx-model">Model</label>
+      <select id="watsonx-model">
+        <option value="ibm/granite-3-3-8b-instruct">ibm/granite-3-3-8b-instruct</option>
+        <option value="openai/gpt-oss-120b">openai/gpt-oss-120b</option>
+        <option value="mistralai/mistral-small-3-1-24b-instruct-2503">mistralai/mistral-small-3-1-24b-instruct-2503</option>
+        <option value="meta-llama/llama-3-3-70b-instruct">meta-llama/llama-3-3-70b-instruct</option>
+        <option value="other">Other</option>
+      </select>
+      <input
+        type="text"
+        id="custom-watsonx-model"
+        placeholder="Enter other model name"
+        list="watsonx-models"
+        class="hidden"
+      >
+      <label for="watsonx-apikey">API Key</label>
+      <input type="text" id="watsonx-apikey" placeholder="IBM Cloud API Key">
+      <div class="env-label" id="watsonx-apikey-env-label">✓ Using API key from .env file</div>
+      
+      <label for="project-id">Project ID (OR Space ID - choose one)</label>
+      <input type="text" id="project-id" placeholder="IBM Watsonx Project ID">
+      <div class="env-label" id="watsonx-project-env-label">✓ Using Project ID from .env file</div>
+      
+      <label for="space-id">Space ID (OR Project ID - choose one)</label>
+      <input type="text" id="space-id" placeholder="IBM Watsonx Space ID">
+      <div class="env-label" id="watsonx-space-env-label">✓ Using Space ID from .env file</div>
+      
+      <label for="watsonx-url">Watsonx URL</label>
+      <input type="text" id="watsonx-url" placeholder="https://us-south.ml.cloud.ibm.com">
+      <div class="env-label" id="watsonx-url-env-label">✓ Using URL from .env file</div>
+    </div>
+
+    <label for="instructions">Instructions (optional)</label>
+    <textarea id="instructions" placeholder="e.g. TL;DR or executive summary"></textarea>
+
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+      <span id="progress-label">Processing...</span>
+    </div>
+
+    <button id="summarize">Summarize</button>
+  </div>
+
+  <!-- Model history suggestions -->
+  <datalist id="openai-models"></datalist>
+  <datalist id="groq-models"></datalist>
+  <datalist id="watsonx-models"></datalist>
+  <datalist id="ollama-custom-models"></datalist>
+
+  <pre id="output"></pre>
+
+  <!-- Action Buttons -->
+  <button id="copy-button" style="display:none;">📋 Copy</button>
+  <button id="back-button" style="display:none;">🔙 Back</button>
+  <button id="openSummaryWindowBtn" style="display:none;">🗔 Open Summary</button>
+  <button id="closeWindowBtn">❌ Close</button>
+  <button id="history-button">📚 View History</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>

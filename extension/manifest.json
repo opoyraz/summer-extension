@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Summer - AI Summarizer",
+  "version": "1.0",
+  "description": "Summarize webpages using Ollama or Groq",
+  "permissions": ["scripting", "activeTab", "tabs", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png",
+    "default_title": "Summarize with Summer"
+  },
+  "host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [
+    {
+      "resources": ["history.html", "styles.css","history.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+crewai
+openai
+groq
+requests
+ibm-watsonx-ai
+langchain-community
+python-dotenv
+beautifulsoup4
+lxml
+litellm
+pydantic
+
+
+
+
