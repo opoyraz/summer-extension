@@ -32,7 +32,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
 async function checkProviderConfig() {
   try {
     console.log("🔍 Checking provider configuration...");
-    const response = await fetch("http://localhost:8000/providers");
+    const response = await fetch("http://localhost:5050/providers");
     
     if (response.ok) {
       providerConfig = await response.json();
@@ -592,7 +592,7 @@ document.getElementById("summarize").onclick = async () => {
           text: `${payload.text.substring(0, 100)}... (${payload.text.length} chars)`
         });
 
-        const response = await fetch("http://localhost:8000/summarize", {
+        const response = await fetch("http://localhost:5050/summarize", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json"
@@ -651,7 +651,7 @@ document.getElementById("summarize").onclick = async () => {
         clearInterval(progressInterval);
         hideProgress();
         console.error("🔥 Network error:", error);
-        alert("❌ Failed to connect to backend. Make sure the server is running on http://localhost:8000");
+        alert("❌ Failed to connect to backend. Make sure the server is running on http://localhost:5050");
       }
     });
 

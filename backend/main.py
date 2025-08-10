@@ -74,3 +74,7 @@ async def summarize(request: Request):
     except Exception as e:
         print(f"❌ Backend error: {e}")
         return {"error": str(e)}
+    
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5050)
